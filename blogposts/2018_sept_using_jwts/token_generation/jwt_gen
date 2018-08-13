@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ ! -f target/jwt_gen-1.0.jar ]; then
+  echo "The jwt jar is not found, expected path is './target/jwt_gen-1.0.jar'"
+else
+  java -cp target/jwt_gen-1.0.jar com/okera/jwt/JwtGenerator "$@"
+fi

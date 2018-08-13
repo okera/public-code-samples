@@ -1,0 +1,35 @@
+Usage: java -cp target/jwt_gen-1.0.jar com.okera.jwt.JwtGenerator
+            (-s|--subject) <arg> (-e|--expirytime) <arg>
+            [-a|--algorithm|-g|--group|-i|--issuer]
+
+The following flags are currently accepted by the
+    service:
+     -a,--algorithm <arg>    algorithm used
+     -e,--expirytime <arg>   expiration time
+     -g,--group <arg>        token group
+     -h,--help               print this message
+     -i,--issuer <arg>       token issuer
+     -s,--subject <arg>      token subject
+
+Alongside, the following algorithms are accepted:
+RS256
+RS384
+RS512
+
+The public and private key files used must be in pkcs8 format, which the command line
+does not generate. Here are the steps to generate compatible keys:
+
+# GENERATE PRIVATE RSA512 KEY in PKCS#1 format
+openssl genrsa -f4 -out id_rsa 4096
+
+# EXPORT PUBLIC KEY
+openssl rsa -in id_rsa -outform PEM -pubout -out id_rsa.pub
+
+# EXPORT PRIVATE KEY to PKCS#8 format
+openssl pkcs8 -topk8 -inform pem -in id_rsa -outform PEM -nocrypt -out id_rsa.priv
+
+Invocation used to create jane.jwt
+java -cp target/jwt_gen-1.0.jar com.okera.jwt.JwtGenerator -s jane -e 1594312968000 -g non_admin,bird_owner
+
+for joe.jwt
+java -cp target/jwt_gen-1.0.jar com.okera.jwt.JwtGenerator -s joe -e 1594312968000 -g admin,cat_owner
