@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+// Copyright (c) 2016, Cerebro Data, inc.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!--
+  <parent>
+    <groupId>com.okera</groupId>
+    <artifactId>okera</artifactId>
+    <version>latest</version>
+    <relativePath>./parent-pom.xml</relativePath>
+  </parent>
+  -->
+
+  <groupId>com.okera</groupId>
+  <artifactId>jwt_gen</artifactId>
+  <name>Java JWT</name>
+  <packaging>jar</packaging>
+  <version>1.0</version>
+
+  <properties>
+    <java.version>1.8</java.version>
+    <plugin.assembly.version>3.0.0</plugin.assembly.version>
+    <plugin.cobertura.version>2.7</plugin.cobertura.version>
+    <plugin.compiler.version>3.6.2</plugin.compiler.version>
+    <plugin.shade.version>3.0.0</plugin.shade.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+       <groupId>com.cerebro</groupId>
+       <artifactId>cerebro-common</artifactId>
+       <version>1.2-SNAPSHOT</version>
+     </dependency>
+     <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <!--
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>false</filtering>
+      </resource>
+    </resources>
+-->
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${plugin.compiler.version}</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${plugin.cobertura.version}</version>
+        <configuration>
+          <mainClass>com.okera.jwt.JwtGenerator</mainClass>
+          <formats>
+            <format>html</format>
+            <format>xml</format>
+          </formats>
+          <check />
+        </configuration>
+       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+       </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${plugin.shade.version}</version>
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>shade</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+                <transformers>
+                  <transformer implementation=
+                    "org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                </transformers>
+                <filters>
+                  <!-- Remove the signature files from all jars -->
+                  <filter>
+                    <artifact>*:*</artifact>
+                    <excludes>
+                      <exclude>META-INF/*.SF</exclude>
+                      <exclude>META-INF/*.DSA</exclude>
+                      <exclude>META-INF/*.RSA</exclude>
+                    </excludes>
+                  </filter>
+                </filters>
+              </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${plugin.assembly.version}</version>
+          <configuration>
+          <!--
+            <descriptorRefs>
+              <descriptorRef>jar-with-dependencies</descriptorRef>
+            </descriptorRefs>
+          -->
+            <archive>
+              <manifest>
+                <mainClass>com.okera.jwt.JwtGenerator</mainClass>
+                <addClasspath>true</addClasspath>
+              </manifest>
+              <manifestEntries>
+                <Class-Path>.</Class-Path>
+              </manifestEntries>
+            </archive>
+          </configuration>
+          <!--
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+        </executions>
+-->
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+</project>
