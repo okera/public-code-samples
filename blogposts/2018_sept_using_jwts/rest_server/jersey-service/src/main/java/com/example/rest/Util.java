@@ -21,7 +21,8 @@ public class Util {
 
   /**
    * Reads a PEM file and returns the content as a byte array.
-   * @param pemFile
+   *
+   * @param pemFile the file to read
    * @return a byte array containing the PEM file contents
    * @throws IOException
    */
@@ -50,8 +51,9 @@ public class Util {
   /**
    * Reads a public key from a byte array and build a PublicKey object
    * using that key and the specified algorithm.
-   * @param keyContents
-   * @param algorithm
+   *
+   * @param keyContents raw contents of a public key file
+   * @param algorithm the algorithm used by the key (e.g. RS512)
    * @return a PublicKey object based on the key and algorithm arguments
    * @throws IOException
    */
@@ -68,9 +70,10 @@ public class Util {
   }
 
   /**
-   * Read a public key from a file path.
-   * @param filepath
-   * @param algorithm
+   * Read a public key from the indicated file.
+   *
+   * @param filepath path to the public key to read
+   * @param algorithm the algorithm used by the key (e.g. RS512)
    * @return a PublicKey object based on the key and algorithm arguments
    * @throws IOException
    */
@@ -83,9 +86,10 @@ public class Util {
 
   /**
    * Create a public key from a byte array
-   * @param keyBytes
-   * @param algorithm
-   * @return
+   *
+   * @param keyBytes the public key
+   * @param algorithm the algorithm used by the key (e.g. RS512)
+   * @return a PublicKey object representing the key
    * @throws IOException
    */
   private static PublicKey getPublicKey(byte[] keyBytes, String algorithm)
@@ -109,7 +113,8 @@ public class Util {
 
   /**
    * Extract a token from the set of headers in the list
-   * @param headers
+   *
+   * @param headers the HTTP headers from a request
    * @return the bearer token, if one was found, or null if none was found
    */
   public static String getTokenFromHeaders(List<String> headers) {
@@ -130,8 +135,9 @@ public class Util {
 
   /**
    * Extract just the token from the Authorization header
-   * @param header
-   * @return a String containg a token or null if there was an issue
+   *
+   * @param header String containing the "Authorication" header
+   * @return a String containg a token or null if not token is found
    */
   public static String getTokenFromHeader(String header) {
     log.info("header: " + header);

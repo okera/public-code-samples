@@ -61,10 +61,10 @@ public class JWTUtil {
   }
 
   /**
-   * Pulls the value associated with the "groups" claim.
+   * Pulls the value associated with the "groups" claim out of a JWT
    *
    * @param jwt
-   * @return list of groups that this user is a part of
+   * @return List of groups that this user is a part of
    */
   public static List<String> getGroupsFromJWT(DecodedJWT jwt) {
     List<String> groups = JWTUtil.parseGroupsList(jwt.getClaim("groups"));
@@ -103,10 +103,10 @@ public class JWTUtil {
   }
 
   /**
-   * Verify a token using the configured public key.
+   * Verify a token.
    *
-   * @param algorithmSign
-   * @param token
+   * @param algorithmSign built using the associated public key, used to validate a token
+   * @param token the JWT to validate
    * @return boolean indicating whether the token argument is valid given the
    * algorithm object passed in.
    */
@@ -121,9 +121,10 @@ public class JWTUtil {
   }
 
   /**
-   * Pull the username out of a token after validating said token
-   * @param algorithmSign
-   * @param token
+   * Validate the token and then pull out the username.
+   *
+   * @param algorithmSign built using the associated public key, used to validate a token
+   * @param token the JWT to validate
    * @return the value associated with the "sub" claim in the token
    * @throws JWTVerificationException
    */
@@ -138,8 +139,8 @@ public class JWTUtil {
   /**
    * Pull the groups out of a token after validating said token
    *
-   * @param algorithmSign
-   * @param token
+   * @param algorithmSign built using the associated public key, used to validate a token
+   * @param token the JWT to validate
    * @return the value associated with the "groups" claim
    */
   public static List<String> getGroupsFromToken(Algorithm algorithmSign, String token) {
